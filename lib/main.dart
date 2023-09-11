@@ -6,14 +6,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'config/router/app_router.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: ".env");
-  runApp(
-      const ProviderScope(child: MainApp())
-  );
+  await dotenv.load(fileName: '.env');
+
+  runApp(const ProviderScope(child: MainApp()));
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key})
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,6 @@ class MainApp extends StatelessWidget {
       routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
       theme: AppTheme().getTheme(),
-      title: 'Material App',
     );
   }
 }
