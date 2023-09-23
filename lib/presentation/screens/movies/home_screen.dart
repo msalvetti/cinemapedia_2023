@@ -1,6 +1,5 @@
 import 'package:cinemapedia_2023/presentation/providers/providers.dart';
 import 'package:cinemapedia_2023/presentation/widgets/movies/movies_slideshow.dart';
-import 'package:cinemapedia_2023/presentation/widgets/shared/custom_bottom_navigation.dart';
 import 'package:cinemapedia_2023/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,14 +35,19 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    //  final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
 
     final slideshowMovies = ref.watch(movieSlideshowProvider);
 
     return Column(
       children: [
-        CustomAppbar(),
+        const CustomAppbar(),
         MoviesSlideshow(movies: slideshowMovies),
+        MovieHorizontalListview(
+          movies: nowPlayingMovies,
+          title: 'En cines',
+          subTitle: 'Lunes 20',
+        ),
       ],
     );
   }
