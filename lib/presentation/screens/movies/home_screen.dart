@@ -31,26 +31,71 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     super.initState();
 
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+    ref.read(popularMoviesProvider.notifier).loadNextPage();
+    ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+    ref.read(upcomingMoviesProvider.notifier).loadNextPage();
   }
 
   @override
   Widget build(BuildContext context) {
-    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
-
     final slideshowMovies = ref.watch(movieSlideshowProvider);
+    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    final popularMovies = ref.watch(popularMoviesProvider);
+    final upcomingMovies = ref.watch(upcomingMoviesProvider);
+    final topRatedMovies = ref.watch(topRatedMoviesProvider);
 
-    return Column(
-      children: [
-        const CustomAppbar(),
-        MoviesSlideshow(movies: slideshowMovies),
-        MovieHorizontalListview(
-          movies: nowPlayingMovies,
-          title: 'En cines',
-          subTitle: 'Lunes 20',
-          loadNextPage: () {
-            ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-          },
+    return CustomScrollView(
+      slivers: [
+        const SliverAppBar(
+          floating: true,
+          flexibleSpace: FlexibleSpaceBar(
+            centerTitle: true,
+            title: CustomAppbar(),
+          ),
         ),
+        SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+          return Column(children: [
+            MoviesSlideshow(movies: slideshowMovies),
+            MovieHorizontalListview(
+              movies: nowPlayingMovies,
+              title: 'En cines',
+              subTitle: 'Lunes 20',
+              loadNextPage: () {
+                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+              },
+            ),
+            MovieHorizontalListview(
+              //upcoming
+              movies: upcomingMovies,
+              title: 'Proximamente',
+              subTitle: 'en este mes',
+              loadNextPage: () {
+                ref.read(upcomingMoviesProvider.notifier).loadNextPage();
+              },
+            ),
+            MovieHorizontalListview(
+              movies: popularMovies,
+              title: 'Populares',
+              // subTitle: 'en este mes',
+              loadNextPage: () {
+                ref.read(popularMoviesProvider.notifier).loadNextPage();
+              },
+            ),
+            MovieHorizontalListview(
+              //top_rated
+              movies: topRatedMovies,
+              title: 'Mejores calificadas',
+              subTitle: 'desde siempre',
+              loadNextPage: () {
+                ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            )
+          ]);
+        }, childCount: 1)),
       ],
     );
   }

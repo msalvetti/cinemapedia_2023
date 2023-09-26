@@ -28,6 +28,7 @@ class MoviesSlideshow extends StatelessWidget {
         itemCount: movies.length,
         viewportFraction: 0.8,
         scale: 0.4,
+        autoplay: true,
       ),
     );
   }

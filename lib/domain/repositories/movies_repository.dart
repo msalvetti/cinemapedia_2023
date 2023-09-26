@@ -8,4 +8,10 @@ Es la clase "que se usa en el resto de la app".
 **/
 abstract class MoviesRepository {
   Future<List<Movie>> getNowPlaying({int page = 1});
+
+  Future<List<Movie>> getPopular({int page = 1});
+
+  Future<List<Movie>> getUpcoming({int page = 1});
+
+  Future<List<Movie>> getTopRated({int page = 1});
 }
