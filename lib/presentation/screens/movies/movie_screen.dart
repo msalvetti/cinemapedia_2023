@@ -1,5 +1,6 @@
 import 'package:cinemapedia_2023/domain/entities/movie.dart';
 import 'package:cinemapedia_2023/presentation/providers/movies/movie_info_provider.dart';
+import 'package:cinemapedia_2023/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,10 +19,15 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
   @override
   void initState() {
     super.initState();
+
     //cache local
     ref
         .read(movieInfoProvider.notifier)
         .loadMovie(widget.movieId); //esto hace request
+    ref
+        .read(actorsByMovieProvider.notifier)
+        .loadActors(widget.movieId); //esto hace request
+
     // los widgets llaman a los providers, no el repositorio directo
   }
 
@@ -68,7 +74,7 @@ class _MovieDetails extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            chpkildren: [
+            children: [
               // Imagen
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
@@ -112,7 +118,7 @@ class _MovieDetails extends StatelessWidget {
           ),
         ),
 
-        //  _ActorsByMovie(movieId: movie.id.toString() ),
+        _ActorsByMovie(movieId: movie.id.toString()),
 
         const SizedBox(height: 50),
       ],
@@ -135,11 +141,12 @@ class _CustomSliverAppBar extends StatelessWidget {
       foregroundColor: Colors.white,
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        title: Text(
+        /*     title: Text(
           movie.title,
           style: const TextStyle(fontSize: 20),
           textAlign: TextAlign.start,
         ),
+     */
         background: Stack(
           children: [
             SizedBox.expand(
@@ -167,6 +174,72 @@ class _CustomSliverAppBar extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ActorsByMovie extends ConsumerWidget {
+  final String movieId;
+
+  const _ActorsByMovie({required this.movieId});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final actorsByMovie = ref.watch(actorsByMovieProvider);
+
+    if (actorsByMovie[movieId] == null) {
+      //aun no cargaron los actores
+      return const CircularProgressIndicator(
+        strokeWidth: 2,
+      );
+    }
+
+    final actors = actorsByMovie[movieId]!;
+
+    return SizedBox(
+      height: 300,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: actors.length,
+        itemBuilder: (context, index) {
+          final actor = actors[index];
+
+          return Container(
+            padding: const EdgeInsets.all(8.0),
+            width: 135,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // foto
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(
+                    actor.profilePath,
+                    height: 180,
+                    width: 135,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                // nombre
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  actor.name,
+                  maxLines: 2,
+                ),
+                Text(
+                  actor.character ?? '',
+                  maxLines: 2,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
