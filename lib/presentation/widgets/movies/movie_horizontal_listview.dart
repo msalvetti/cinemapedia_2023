@@ -78,7 +78,7 @@ class _Slide extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme;
 
     return Container(
-        margin: EdgeInsets.symmetric(horizontal: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
