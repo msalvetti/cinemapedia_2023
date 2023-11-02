@@ -1,7 +1,7 @@
 import '../entities/movie.dart';
 
 abstract class LocalStorageRepository {
-  Future<void> toggleFavorites(Movie movie);
+  Future<void> toggleFavorite(Movie movie);
 
   Future<bool> isMovieFavorite(int movieId);
 
