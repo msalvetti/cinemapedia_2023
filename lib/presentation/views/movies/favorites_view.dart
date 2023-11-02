@@ -1,21 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FavoritesView extends StatelessWidget {
+import '../../providers/storage/favorite_movies_provider.dart';
+
+class FavoritesView extends ConsumerStatefulWidget {
   const FavoritesView({super.key});
 
   @override
+  FavoritesViewState createState() => FavoritesViewState();
+}
+
+class FavoritesViewState extends ConsumerState<FavoritesView> {
+  /*
+    initState para traer las 10 primeras peliculas usando el
+    favorite_movies_provider
+  */
+  @override
+  void initState() {
+    super.initState();
+    // aca cargamos las peliculas iniciales
+    ref.read(favoriteMoviesProvider.notifier).loadNextPage();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final favoriteMovies = ref.watch(favoriteMoviesProvider).values.toList();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Favoritos'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'FavoritesView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-    );
+        body: ListView.builder(
+            itemCount: favoriteMovies.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: Text(favoriteMovies[index].title),
+              );
+            }));
   }
 }
