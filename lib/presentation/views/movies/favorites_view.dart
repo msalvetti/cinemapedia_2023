@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../providers/storage/favorite_movies_provider.dart';
 import '../../widgets/movies/movie_masonry.dart';
@@ -32,6 +33,27 @@ class FavoritesViewState extends ConsumerState<FavoritesView> {
   @override
   Widget build(BuildContext context) {
     final favoriteMovies = ref.watch(favoriteMoviesProvider).values.toList();
+
+    if (favoriteMovies.isEmpty) {
+      final myColors = Theme.of(context).colorScheme;
+      return Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(Icons.favorite_outline_sharp,
+                  size: 60, color: myColors.primary),
+              Text('No hay peliculas favoritas',
+                  style: TextStyle(fontSize: 30, color: myColors.primary)),
+              const SizedBox(height: 20),
+              FilledButton.tonal(
+                child: const Text('Explorar'),
+                onPressed: () => context.go('/home/0'),
+              ),
+            ]),
+      );
+    }
+
     return MovieMasonry(movies: favoriteMovies, loadNextPage: loadNextPage);
   }
 
