@@ -2,7 +2,10 @@
 class Assets {
   Assets._();
 
+  static const String assetsBackground = 'assets/background.jpeg';
+  static const String assetsSplash = 'assets/splash.png';
   static const String cinemapedia2023 = '.env';
   static const String iconAppIcon1 = 'assets/icon/app-icon-1.jpeg';
   static const String iconAppIconMovie = 'assets/icon/app-icon-movie.jpeg';
+  static const String loadersBottleLoader = 'assets/loaders/bottle-loader.gif';
 }
