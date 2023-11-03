@@ -1,4 +1,4 @@
-package com.example.cinemapedia_2023
+package com.msalvetti.cinemapediamobile
 
 import io.flutter.embedding.android.FlutterActivity
 
