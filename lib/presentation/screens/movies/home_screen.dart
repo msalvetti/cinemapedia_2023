@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cinemapedia_2023/presentation/widgets/widgets.dart';
 
+import '../../views/movies/popular_view.dart';
 import '../../views/views.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,7 +12,7 @@ class HomeScreen extends StatelessWidget {
 
   final viewRoutes = const <Widget>[
     HomeView(),
-    SizedBox(), // <--- categorias View
+    PopularView(),
     FavoritesView(),
   ];
 
